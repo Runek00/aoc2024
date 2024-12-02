@@ -1,7 +1,8 @@
-function fileToTable(path)
+local function fileToTable(path)
 	local file = io.open(path, "r")
 	local lines = {}
 	if not file then
+		print("File not found: " .. path)
 		return lines
 	end
 	local i = 1
@@ -13,7 +14,7 @@ function fileToTable(path)
 	return lines
 end
 
-function fileToString(path)
+local function fileToString(path)
 	local file = io.open(path, "r")
 	local str = ""
 	if not file then
@@ -26,7 +27,7 @@ function fileToString(path)
 	return str
 end
 
-function tableTo2DCharArray(table)
+local function tableTo2DCharArray(table)
 	local charArray = {}
 	for i = 1, #table do
 		charArray[i] = {}
@@ -37,7 +38,7 @@ function tableTo2DCharArray(table)
 	return charArray
 end
 
-function tab2DSize(tab)
+local function tab2DSize(tab)
 	if #tab == 0 then
 		return 0, 0
 	end
@@ -50,34 +51,34 @@ function tab2DSize(tab)
 	return #tab, y
 end
 
-function lcm(num1, num2)
-	return math.abs(num1 * num2) / gcd(num1, num2)
-end
-
-function gcd(num1, num2)
+local function gcd(num1, num2)
 	if num1 == 0 or num2 == 0 then
 		return num1 + num2
 	end
-	absN1 = math.abs(num1)
-	absN2 = math.abs(num2)
-	bigger = math.max(absN1, absN2)
-	smaller = math.min(absN1, absN2)
+	local absN1 = math.abs(num1)
+	local absN2 = math.abs(num2)
+	local bigger = math.max(absN1, absN2)
+	local smaller = math.min(absN1, absN2)
 	return gcd(bigger % smaller, smaller)
 end
 
-function inTab(point, tab)
+local function lcm(num1, num2)
+	return math.abs(num1 * num2) / gcd(num1, num2)
+end
+
+local function inTab(point, tab)
 	return point.a >= 1 and point.a <= #tab and point.b >= 1 and point.b <= #tab[0]
 end
 
-function point(a, b)
+local function point(a, b)
 	return { a = a, b = b }
 end
 
-function step(point, from)
+local function step(point, from)
 	return { a = point.a, b = point.b, from = from }
 end
 
-function step(a, b, from)
+local function step(a, b, from)
 	return { a = a, b = b, from = from }
 end
 
@@ -86,12 +87,23 @@ S = point(1, 0)
 E = point(0, 1)
 W = point(0, -1)
 
-function opposite(direction)
+local function opposite(direction)
 	return { a = -direction.a, b = -direction.b }
 end
 
-function getAllDirections()
+local function getAllDirections()
 	return { N, S, E, W }
+end
+
+local function split(str, sep)
+	if sep == nil then
+		sep = "%s"
+	end
+	local t = {}
+	for str in string.gmatch(str, "([^" .. sep .. "]+)") do
+		table.insert(t, str)
+	end
+	return t
 end
 
 local M = {}
@@ -110,4 +122,5 @@ M.N = N
 M.S = S
 M.E = E
 M.W = W
+M.split = split
 return M

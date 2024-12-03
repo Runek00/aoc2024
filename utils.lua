@@ -100,8 +100,8 @@ local function split(str, sep)
 		sep = "%s"
 	end
 	local t = {}
-	for str in string.gmatch(str, "([^" .. sep .. "]+)") do
-		table.insert(t, str)
+	for s in string.gmatch(str, "([^" .. sep .. "]+)") do
+		table.insert(t, s)
 	end
 	return t
 end

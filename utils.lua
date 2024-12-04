@@ -99,6 +99,13 @@ local function split(str, sep)
 	if sep == nil then
 		sep = "%s"
 	end
+	if sep == "" then
+		local t = {}
+		string.gsub(str, ".", function(c)
+			table.insert(t, c)
+		end)
+		return t
+	end
 	local t = {}
 	for s in string.gmatch(str, "([^" .. sep .. "]+)") do
 		table.insert(t, s)

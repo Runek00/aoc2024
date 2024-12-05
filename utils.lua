@@ -99,18 +99,28 @@ local function split(str, sep)
 	if sep == nil then
 		sep = "%s"
 	end
+	local t = {}
 	if sep == "" then
-		local t = {}
 		string.gsub(str, ".", function(c)
 			table.insert(t, c)
 		end)
 		return t
 	end
-	local t = {}
 	for s in string.gmatch(str, "([^" .. sep .. "]+)") do
 		table.insert(t, s)
 	end
 	return t
+end
+
+local function addSets(a, b)
+	local out = {}
+	for k, _ in pairs(a) do
+		out[k] = true
+	end
+	for k, _ in pairs(b) do
+		out[k] = true
+	end
+	return out
 end
 
 local M = {}
@@ -130,4 +140,5 @@ M.S = S
 M.E = E
 M.W = W
 M.split = split
+M.addSets = addSets
 return M

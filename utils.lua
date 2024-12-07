@@ -71,15 +71,18 @@ local function inTab(point, tab)
 end
 
 local function point(a, b)
-	return { a = a, b = b }
+	out = {}
+	out.a = a
+	out.b = b
+	return out
 end
 
-local function step(point, from)
-	return { a = point.a, b = point.b, from = from }
+local function stepFromPoint(pt, to)
+	return { a = pt.a, b = pt.b, to = to }
 end
 
-local function step(a, b, from)
-	return { a = a, b = b, from = from }
+local function step(a, b, to)
+	return { a = a, b = b, to = to }
 end
 
 N = point(-1, 0)
@@ -95,21 +98,24 @@ local function getAllDirections()
 	return { N, S, E, W }
 end
 
-local function split(str, sep)
-	if sep == nil then
-		sep = "%s"
+local function split(source, sep)
+	local result, i = {}, 1
+	while true do
+		local a, b = source:find(sep)
+		if not a then
+			break
+		end
+		local candidat = source:sub(1, a - 1)
+		if candidat ~= "" then
+			result[i] = candidat
+		end
+		i = i + 1
+		source = source:sub(b + 1)
 	end
-	local t = {}
-	if sep == "" then
-		string.gsub(str, ".", function(c)
-			table.insert(t, c)
-		end)
-		return t
+	if source ~= "" then
+		result[i] = source
 	end
-	for s in string.gmatch(str, "([^" .. sep .. "]+)") do
-		table.insert(t, s)
-	end
-	return t
+	return result
 end
 
 local function addSets(a, b)
@@ -123,6 +129,24 @@ local function addSets(a, b)
 	return out
 end
 
+local function setIntersect(s1, s2)
+	local out = {}
+	for k, _ in pairs(s1) do
+		if s2[k] then
+			out[k] = true
+		end
+	end
+	return out
+end
+
+local function tabToNum(tab)
+	local out = {}
+	for i = 1, #tab do
+		out[i] = tonumber(tab[i])
+	end
+	return out
+end
+
 local M = {}
 M.fileToTable = fileToTable
 M.fileToString = fileToString
@@ -132,6 +156,7 @@ M.lcm = lcm
 M.gcd = gcd
 M.inTab = inTab
 M.point = point
+M.stepFromPoint = stepFromPoint
 M.step = step
 M.opposite = opposite
 M.getAllDirections = getAllDirections
@@ -141,4 +166,6 @@ M.E = E
 M.W = W
 M.split = split
 M.addSets = addSets
+M.setIntersect = setIntersect
+M.tabToNum = tabToNum
 return M

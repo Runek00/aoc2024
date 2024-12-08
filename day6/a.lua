@@ -65,7 +65,7 @@ end
 print("day6 part1: " .. count)
 
 step = U.stepFromPoint(point, dir)
-local visiting = {}
+visited = {}
 local found = false
 local used = {}
 
@@ -76,46 +76,57 @@ end
 local function str(s)
 	return s.a .. "|" .. s.b .. "|" .. s.to.a .. "|" .. s.to.b
 end
+local function unstr(s)
+	local params = U.split(s, "|")
+	return {
+		a = tonumber(params[1]),
+		b = tonumber(params[2]),
+		to = { a = tonumber(params[3]), b = tonumber(params[4]) },
+	}
+end
+
 used[pstr(point)] = true
 
 count = 0
-local function walk(step, first)
+local function walk()
+	visited = {}
 	while true do
-		local fwd = forward(step)
-		if tab[fwd.a] ~= nil and tab[fwd.a][fwd.b] ~= nil then
-			if tab[fwd.a][fwd.b] == "#" then
-				step = right(step)
-			else
-				if not first then
-					if visiting[str(step)] then
-						found = true
-						count = count + 1
-						return
-					end
-					visiting[str(step)] = true
-					step = fwd
-				else
-					tab[fwd.a][fwd.b] = "#"
-					visiting = {}
-					walk(step, false)
-					if found then
-						if used[pstr(fwd)] then
-							count = count - 1
-						else
-							used[pstr(fwd)] = true
-						end
-						found = false
-					end
-					tab[fwd.a][fwd.b] = "."
-					step = fwd
-				end
-			end
-		else
+		if tab[step.a] == nil or tab[step.a][step.b] == nil then
 			break
+		end
+		if visited[str(step)] then
+			count = count + 1
+			return
+		end
+		visited[str(step)] = true
+		local fwd = forward(step)
+		if tab[fwd.a] == nil or tab[fwd.a][fwd.b] == nil then
+			break
+		end
+		if tab[fwd.a][fwd.b] == "#" then
+			step = right(step)
+		else
+			step = fwd
 		end
 	end
 end
 
-walk(step, true)
+walk()
+print(count)
+
+local tests = U.cloneTable(visited, {})
+
+count = 0
+
+for k, _ in pairs(tests) do
+	st = unstr(k)
+	if not used[pstr(st)] then
+		step = U.stepFromPoint(point, dir)
+		tab[st.a][st.b] = "#"
+		walk()
+		tab[st.a][st.b] = "."
+		used[pstr(st)] = true
+	end
+end
 
 print("day6 part2: " .. count)

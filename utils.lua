@@ -147,6 +147,16 @@ local function tabToNum(tab)
 	return out
 end
 
+local function cloneTable(src, dest)
+	if dest == nil then
+		dest = {}
+	end
+	for k, v in pairs(src) do
+		dest[k] = v
+	end
+	return dest
+end
+
 local M = {}
 M.fileToTable = fileToTable
 M.fileToString = fileToString
@@ -168,4 +178,5 @@ M.split = split
 M.addSets = addSets
 M.setIntersect = setIntersect
 M.tabToNum = tabToNum
+M.cloneTable = cloneTable
 return M

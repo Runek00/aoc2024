@@ -157,6 +157,58 @@ local function cloneTable(src, dest)
 	return dest
 end
 
+local function copyTable2D(src, dest)
+	if dest == nil then
+		dest = {}
+	end
+	for i = 1, #src do
+		if dest[i] == nil then
+			dest[i] = {}
+		end
+		for j = 1, #src[i] do
+			dest[i][j] = src[i][j]
+		end
+	end
+	return dest
+end
+
+local function setSize(set)
+	local c = 0
+	for _, _ in pairs(set) do
+		c = c + 1
+	end
+	return c
+end
+
+local function pointInBounds(point, tab)
+	return point.a >= 1 and point.a <= #tab and point.b >= 1 and point.b <= #tab[1]
+end
+
+local function pstr(s)
+	return s.a .. "|" .. s.b
+end
+
+local function unpstr(s)
+	local params = split(s, "|")
+	return {
+		a = tonumber(params[1]),
+		b = tonumber(params[2]),
+	}
+end
+
+local function str(s)
+	return s.a .. "|" .. s.b .. "|" .. s.to.a .. "|" .. s.to.b
+end
+
+local function unstr(s)
+	local params = split(s, "|")
+	return {
+		a = tonumber(params[1]),
+		b = tonumber(params[2]),
+		to = { a = tonumber(params[3]), b = tonumber(params[4]) },
+	}
+end
+
 local M = {}
 M.fileToTable = fileToTable
 M.fileToString = fileToString
@@ -179,4 +231,11 @@ M.addSets = addSets
 M.setIntersect = setIntersect
 M.tabToNum = tabToNum
 M.cloneTable = cloneTable
+M.copyTable2D = copyTable2D
+M.setSize = setSize
+M.pointInBounds = pointInBounds
+M.pstr = pstr
+M.unpstr = unpstr
+M.str = str
+M.unstr = unstr
 return M

@@ -66,12 +66,12 @@ local function lcm(num1, num2)
 	return math.abs(num1 * num2) / gcd(num1, num2)
 end
 
-local function inTab(point, tab)
-	return point.a >= 1 and point.a <= #tab and point.b >= 1 and point.b <= #tab[0]
+local function pointInBounds(point, tab)
+	return point.a >= 1 and point.a <= #tab and point.b >= 1 and point.b <= #tab[1]
 end
 
 local function point(a, b)
-	out = {}
+	local out = {}
 	out.a = a
 	out.b = b
 	return out
@@ -139,14 +139,6 @@ local function setIntersect(s1, s2)
 	return out
 end
 
-local function tabToNum(tab)
-	local out = {}
-	for i = 1, #tab do
-		out[i] = tonumber(tab[i])
-	end
-	return out
-end
-
 local function cloneTable(src, dest)
 	if dest == nil then
 		dest = {}
@@ -178,10 +170,6 @@ local function setSize(set)
 		c = c + 1
 	end
 	return c
-end
-
-local function pointInBounds(point, tab)
-	return point.a >= 1 and point.a <= #tab and point.b >= 1 and point.b <= #tab[1]
 end
 
 local function pstr(s)
@@ -217,6 +205,30 @@ local function printTable(tab)
 	print(l)
 end
 
+local function map(tab, func)
+	local out = {}
+	for i = 1, #tab do
+		out[i] = func(tab[i])
+	end
+	return out
+end
+
+local function mapXD(tab, dim, func)
+	local out = {}
+	if dim == 1 then
+		out = map(tab, func)
+	else
+		for i = 1, #tab do
+			out[i] = mapXD(tab[i], dim - 1, func)
+		end
+	end
+	return out
+end
+
+local function tabToNum(tab)
+	return map(tab, tonumber)
+end
+
 local M = {}
 M.fileToTable = fileToTable
 M.fileToString = fileToString
@@ -224,7 +236,6 @@ M.tableTo2DCharArray = tableTo2DCharArray
 M.tab2DSize = tab2DSize
 M.lcm = lcm
 M.gcd = gcd
-M.inTab = inTab
 M.point = point
 M.stepFromPoint = stepFromPoint
 M.step = step
@@ -247,4 +258,6 @@ M.unpstr = unpstr
 M.str = str
 M.unstr = unstr
 M.printTable = printTable
+M.map = map
+M.mapXD = mapXD
 return M

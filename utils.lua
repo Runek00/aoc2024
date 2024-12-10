@@ -209,6 +209,14 @@ local function unstr(s)
 	}
 end
 
+local function printTable(tab)
+	local l = ""
+	for i = 1, #tab do
+		l = l .. tab[i] .. ", "
+	end
+	print(l)
+end
+
 local M = {}
 M.fileToTable = fileToTable
 M.fileToString = fileToString
@@ -238,4 +246,5 @@ M.pstr = pstr
 M.unpstr = unpstr
 M.str = str
 M.unstr = unstr
+M.printTable = printTable
 return M

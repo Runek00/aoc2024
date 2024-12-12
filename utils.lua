@@ -85,6 +85,10 @@ local function step(a, b, to)
 	return { a = a, b = b, to = to }
 end
 
+local function addPoints(pt1, pt2)
+	return { a = pt1.a + pt2.a, b = pt1.b + pt2.b }
+end
+
 N = point(-1, 0)
 S = point(1, 0)
 E = point(0, 1)
@@ -226,6 +230,7 @@ local function mapXD(tab, dim, func)
 end
 
 local function tabToNum(tab)
+	print(tab[1][1])
 	return map(tab, tonumber)
 end
 
@@ -239,6 +244,7 @@ M.gcd = gcd
 M.point = point
 M.stepFromPoint = stepFromPoint
 M.step = step
+M.addPoints = addPoints
 M.opposite = opposite
 M.getAllDirections = getAllDirections
 M.N = N

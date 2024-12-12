@@ -28,7 +28,14 @@ local stones = U.tabToNum(U.split(U.fileToString("day11/input.txt"), " "))
 
 local out = 0
 for _, stone in ipairs(stones) do
-	out = out + blink(stone, 75)
+	out = out + blink(stone, 25)
 end
 
 print("day 11 part 1: " .. string.format("%20.0f", out))
+
+out = 0
+for _, stone in ipairs(stones) do
+	out = out + blink(stone, 75)
+end
+
+print("day 11 part 2: " .. string.format("%20.0f", out))

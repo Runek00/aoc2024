@@ -85,6 +85,10 @@ local function step(a, b, to)
 	return { a = a, b = b, to = to }
 end
 
+local function forward(step)
+	return { a = step.a + step.to.a, b = step.b + step.to.b, to = step.to }
+end
+
 local function addPoints(pt1, pt2)
 	return { a = pt1.a + pt2.a, b = pt1.b + pt2.b }
 end
@@ -244,6 +248,7 @@ M.gcd = gcd
 M.point = point
 M.stepFromPoint = stepFromPoint
 M.step = step
+M.forward = forward
 M.addPoints = addPoints
 M.opposite = opposite
 M.getAllDirections = getAllDirections

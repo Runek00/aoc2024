@@ -99,7 +99,14 @@ E = point(0, 1)
 W = point(0, -1)
 
 local function opposite(direction)
-	return { a = -direction.a, b = -direction.b }
+	local out = { a = -direction.a, b = -direction.b }
+	if out.a == -0 then
+		out.a = 0
+	end
+	if out.b == -0 then
+		out.b = 0
+	end
+	return out
 end
 
 local function getAllDirections()
@@ -238,6 +245,16 @@ local function tabToNum(tab)
 	return map(tab, tonumber)
 end
 
+local function printMap(map)
+	for i = 1, #map do
+		local l = ""
+		for j = 1, #map[i] do
+			l = l .. map[i][j]
+		end
+		print(l)
+	end
+end
+
 local M = {}
 M.fileToTable = fileToTable
 M.fileToString = fileToString
@@ -271,4 +288,5 @@ M.unstr = unstr
 M.printTable = printTable
 M.map = map
 M.mapXD = mapXD
+M.printMap = printMap
 return M
